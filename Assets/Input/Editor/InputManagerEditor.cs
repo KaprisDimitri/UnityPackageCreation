@@ -6,11 +6,14 @@ using UnityEditor;
 using System.IO;
 using static GameActionsMapsNames;
 using System.Linq;
+using UnityEditor.VersionControl;
+using UnityEngine.InputSystem;
 
 [CustomEditor(typeof(InputManager))]
 public class InputManagerEditor : Editor
 {
     InputManager inputManager;
+    private const string ALINEA = "    ";
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -21,7 +24,7 @@ public class InputManagerEditor : Editor
         {
             inputManager = target as InputManager;
             //Verifier si l enum n est pas la bonne
-            GenerateEnumInputAction();
+            GenerateEnumInputActionV2();
         }
 
          
@@ -31,12 +34,228 @@ public class InputManagerEditor : Editor
         }
     }
 
-    private const string ALINEA = "    ";
+    private void GetInsertsLine (List<string> fileLine, out int indexToInsetAction,out int indexToInsetActionMap)
+    {
+        indexToInsetAction = -1;
+        indexToInsetActionMap = -1;
+
+        for (int l = 0; l < fileLine.Count; l++)
+        {
+            if (fileLine[l].Contains("GameActionInsertLine")) { indexToInsetAction = l; }
+            if (fileLine[l].Contains("GameActionMapInsertLine")) { indexToInsetActionMap = l; }
+            if (indexToInsetAction != -1 && indexToInsetActionMap != -1) { break; }
+        }
+
+    }
+
+    private bool GetFileLines (string filePath, out List<string> lines)
+    {
+        lines = null;
+        if (!File.Exists(filePath))
+        {
+            Debug.Log("The file GameActionsMapsNames does not exist it s will be create at this path: " + filePath);
+            return false;
+        }
+
+        lines = File.ReadAllLines(filePath).ToList();
+        return true;
+    }
+
+    private void GetAllEnumValue (out List<string> gameActionMapsEnumString, out List<string> gameActionEnumString) 
+    {
+        gameActionMapsEnumString = new List<string>();
+
+        for (int i = 0; i < Enum.GetValues(typeof(GameActionsMapsEnum)).Length; i++)
+        {
+            gameActionMapsEnumString.Add(((GameActionsMapsEnum)i).ToString());
+        }
+
+        gameActionEnumString = new List<string>();
+
+        for (int i = 0; i < Enum.GetValues(typeof(GameActionsEnum)).Length; i++)
+        {
+            gameActionEnumString.Add(((GameActionsEnum)i).ToString());
+        }
+    }
+
+    private bool CheckIfEnumExist(ref List<string> gameEnumString, string actionID)
+    {
+        if (gameEnumString.Contains(actionID))
+        {
+            gameEnumString.Remove(actionID);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void RemoveActionsEnumLines (ref List<string> fileLines, List<string> actionEnumLeft)
+    {
+        List<string> actionEnumLeftCopy = new List<string>(actionEnumLeft);
+
+        for (int i = 0;  i < fileLines.Count;i++)
+        {
+            for(int y = 0; y < actionEnumLeftCopy.Count; y++)
+            {
+                if(fileLines[i].Contains(actionEnumLeftCopy[y]))
+                {
+                    actionEnumLeftCopy.RemoveAt(y);
+                    fileLines.RemoveAt(i);
+                    i--;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void WriteLineInFile (string filePath, List<string> fileLines)
+    {
+        using (StreamWriter writer = new StreamWriter(filePath))
+        {
+            foreach (string line in fileLines)
+            {
+                writer.WriteLine(line);
+            }
+        }
+    }
+
+    private void RenameSOWithRemovedID (List<string> gameActionEnumStringLeft)
+    {
+        string directoryPath = SO_InputManagerSettings.GetPathSOInputs;
+        string directoryPathIO = SO_InputManagerSettings.GetPathSOInputs;
+        if (String.IsNullOrEmpty(directoryPath))
+        {
+            SO_InputManagerSettings.GetOrCreateSettings();
+            directoryPath = SO_InputManagerSettings.GetPathSOInputs;
+            directoryPathIO = directoryPath;
+        }
+
+        directoryPathIO = Application.dataPath + directoryPathIO.Replace("Assets", "");
+
+        string[] files = Directory.GetFiles(directoryPathIO, "*.asset", SearchOption.AllDirectories);
+        Debug.Log(files.Length);
+        Debug.Log(gameActionEnumStringLeft.Count);
+        for(int i = 0; i < files.Length; i++)
+        {
+            for(int y = 0; y < gameActionEnumStringLeft.Count; y++)
+            {
+                if (Path.GetFileNameWithoutExtension(files[i]) == GetSONameWithActionID(gameActionEnumStringLeft[y]))
+                {
+                    Debug.LogError("The asset " + GetSONameWithActionID(gameActionEnumStringLeft[y]) + " as no reference (no same name in the InputActionAsset) is the InputActionAsset." +
+                        " This asset will rename like this: " + GetSONameWithActionIDNoReference(gameActionEnumStringLeft[y]) + ". This is not remove to not remove your references in inspector in other script." +
+                        " If you want to delet this asset you can remove it in: " + directoryPath + GetSONameWithActionIDWithExtension(gameActionEnumStringLeft[y]));
+                    
+                    AssetDatabase.RenameAsset(directoryPath + GetSONameWithActionIDWithExtension(gameActionEnumStringLeft[y]), GetSONameWithActionIDNoReference(gameActionEnumStringLeft[y]));
+                }
+                else
+                {
+                    Debug.Log(Path.GetFileNameWithoutExtension(files[i]) + " n est pas egal " + GetSONameWithActionID(gameActionEnumStringLeft[y]));
+                }
+            }
+        }
+    }
+
+    private void GenerateEnumInputActionV2()
+    {
+        string filePath = Application.dataPath + "/Input/GameActionsMapsNames.cs";
+
+        if (!GetFileLines(filePath, out List<string> filelines))
+        {
+            return;
+        }
+
+        GetAllEnumValue(out List<string> gameActionMapEnumString, out List<string> gameActionEnumString);
+
+        if(!GenerateEnumInputAction(ref filelines, ref gameActionEnumString, ref gameActionMapEnumString))
+        {
+            Debug.Log("There is no change is the enum of Actions and ActionMaps");
+            return;
+        }
+         
+        WriteLineInFile(filePath, filelines);
+
+        RenameSOWithRemovedID(gameActionEnumString);
+
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh(); 
+
+        AssetDatabase.ImportAsset("Assets/Input/GameActionsMapsNames.cs", ImportAssetOptions.ForceUpdate);
+
+        UnityEditor.Compilation.CompilationPipeline.RequestScriptCompilation();
+
+        Debug.LogError("You Need to click on the button on InputManager to regenerate SO_Input");
+    }
+
+    /*
+        GameInputActions inputActions = new GameInputActions();
+        bool isLineChanges = false;
+
+        for (int i = 0; i < inputActions.asset.actionMaps.Count; i++)
+        {
+            for (int t = 0; t < inputActions.asset.actionMaps[i].actions.Count; t++)
+            {
+                string actionID = inputActions.asset.actionMaps[i].name + "_" + inputActions.asset.actionMaps[i].actions[t].name;
+
+                if(!CheckIfEnumExist(ref gameActionEnumString, actionID))
+                {
+                    filelines.Insert(indexToInsetAction, ALINEA + ALINEA + actionID + ",");
+                    indexToInsetAction++;
+                    indexToInsetActionMap++;
+                    isLineChanges = true;
+                }
+            }
+
+            if (!CheckIfEnumExist(ref gameActionMapEnumString, inputActions.asset.actionMaps[i].name))
+            {
+                filelines.Insert(indexToInsetActionMap, ALINEA + ALINEA + inputActions.asset.actionMaps[i].name + ",");
+                isLineChanges = true;
+            }
+        }
+     */
+
+    private bool GenerateEnumInputAction(ref List<string> filelines, ref List<string> gameActionEnumString, ref List<string> gameActionMapEnumString)
+    {
+        GetInsertsLine(filelines, out int indexToInsetAction, out int indexToInsetActionMap);
+
+        GameInputActions inputActions = new GameInputActions();
+        bool isLineChanges = false;
+
+        for (int i = 0; i < inputActions.asset.actionMaps.Count; i++)
+        {
+            for (int t = 0; t < inputActions.asset.actionMaps[i].actions.Count; t++) 
+            {
+                string actionID = inputActions.asset.actionMaps[i].name + "_" + inputActions.asset.actionMaps[i].actions[t].name;
+
+                if (!CheckIfEnumExist(ref gameActionEnumString, actionID))
+                {
+                    filelines.Insert(indexToInsetAction, ALINEA + ALINEA + actionID + ",");
+                    indexToInsetAction++;
+                    indexToInsetActionMap++;
+                    isLineChanges = true;
+                }
+            }
+
+            if (!CheckIfEnumExist(ref gameActionMapEnumString, inputActions.asset.actionMaps[i].name))
+            {
+                filelines.Insert(indexToInsetActionMap, ALINEA + ALINEA + inputActions.asset.actionMaps[i].name + ",");
+                isLineChanges = true;
+            }
+        }
+
+        if(gameActionEnumString.Count != 0 || gameActionMapEnumString.Count != 0)
+        {
+            RemoveActionsEnumLines(ref filelines, gameActionEnumString);
+            RemoveActionsEnumLines(ref filelines, gameActionMapEnumString);
+            isLineChanges = true;
+        }
+
+        return isLineChanges;
+    }
 
     //Gerer les enum qui n existe plus et les retirer
     //Gerer si les valeur des enum on etait supp
     //Recompiler qui au besoin si changement dans le fichier
-    private void GenerateEnumInputAction()
+    private void GenerateEnumInputActionV0001()
     {
 
         // Define the file path where you want to write the output
@@ -68,6 +287,7 @@ public class InputManagerEditor : Editor
             for (int t = 0; t < inputActions.asset.actionMaps[i].actions.Count; t++)
             {
                 bool isActionExist = false;
+
                 for(int v = 0; v < Enum.GetValues(typeof(GameActionsEnum)).Length; v++)
                 {
                     if(((GameActionsEnum)v).ToString() == inputActions.asset.actionMaps[i].name + "_" + inputActions.asset.actionMaps[i].actions[t].name)
@@ -157,7 +377,7 @@ public class InputManagerEditor : Editor
             {
                 string actionName = inputActions.asset.actionMaps[i].actions[t].name;
                 string actionID = inputActions.asset.actionMaps[i].name + "_" + actionName;
-                string assetPath = directoryPath + "SO_Input_" + actionID + ".asset";
+                string assetPath = directoryPath + GetSONameWithActionIDWithExtension(actionID);
 
                 switch (inputActions.asset.actionMaps[i].actions[t].expectedControlType)
                 {
@@ -277,6 +497,25 @@ public class InputManagerEditor : Editor
         allActionEnumtField.SetValue(inputManager, inputMapData);
 
         EditorUtility.SetDirty(inputManager);
+    }
+    private string GetSONameWithActionIDWithExtension(string actionID)
+    {
+        return GetSONameWithActionID(actionID) + ".asset";
+    }
+
+    private string GetSONameWithActionID (string actionID)
+    {
+        return "SO_Input_" + actionID;
+    }
+
+    private string GetSONameWithActionIDNoReferenceWithExtension(string actionID)
+    {
+        return GetSONameWithActionIDNoReference(actionID) +".asset";
+    }
+
+    private string GetSONameWithActionIDNoReference(string actionID)
+    {
+        return "SO_Input_" + actionID + "_NoReference";
     }
 }
 

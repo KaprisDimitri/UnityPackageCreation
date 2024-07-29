@@ -6,7 +6,7 @@
             "id": "1415d9ba-b103-4681-b247-fb77cf7dadb6",
             "actions": [
                 {
-                    "name": "MovingAction",
+                    "name": "MovingAction2",
                     "type": "Value",
                     "id": "db66d189-2123-4d6f-a10b-b466bb9784fb",
                     "expectedControlType": "Vector2",
@@ -41,7 +41,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MovingAction",
+                    "action": "MovingAction2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -52,7 +52,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MovingAction",
+                    "action": "MovingAction2",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -63,7 +63,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MovingAction",
+                    "action": "MovingAction2",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -74,7 +74,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MovingAction",
+                    "action": "MovingAction2",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -85,7 +85,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MovingAction",
+                    "action": "MovingAction2",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -96,7 +96,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MovingAction",
+                    "action": "MovingAction2",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },

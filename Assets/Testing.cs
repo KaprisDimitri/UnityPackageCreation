@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static GameActionsMapsNames;
 
 public class Testing : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class Testing : MonoBehaviour
     void Start()
     {
         mouvement.SetReceiveBridgeValue(MouvementAction, true);
+        mouvement.SetReceiveBridgeValue(MouvementAction, false);
+        InputManager.Instance.EnableAction(GameActionsEnum.FirstPersonActionMap_MovingAction2, true);
+
         mouvement.OnActived.SetRecieveValue(Active, true);
         StartCoroutine(Coroutine01()); 
     }
@@ -33,11 +37,11 @@ public class Testing : MonoBehaviour
     IEnumerator Coroutine01 ()
     {
         yield return new WaitForSeconds(30);
-        Debug.Log("j ai attendu 1 je desactive");
+       /* Debug.Log("j ai attendu 1 je desactive");
         InputManager.Instance.EnableAction(GameActionsMapsNames.GameActionsEnum.FirstPersonActionMap_MovingAction, false);
 
         yield return new WaitForSeconds(30);
         Debug.Log("j ai attendu 1 je active");
-        InputManager.Instance.EnableAction(GameActionsMapsNames.GameActionsEnum.FirstPersonActionMap_MovingAction, true);
+        InputManager.Instance.EnableAction(GameActionsMapsNames.GameActionsEnum.FirstPersonActionMap_MovingAction, true);*/
     }
 }

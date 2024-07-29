@@ -28,7 +28,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             ""id"": ""1415d9ba-b103-4681-b247-fb77cf7dadb6"",
             ""actions"": [
                 {
-                    ""name"": ""MovingAction"",
+                    ""name"": ""MovingAction2"",
                     ""type"": ""Value"",
                     ""id"": ""db66d189-2123-4d6f-a10b-b466bb9784fb"",
                     ""expectedControlType"": ""Vector2"",
@@ -63,7 +63,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MovingAction"",
+                    ""action"": ""MovingAction2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -74,7 +74,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MovingAction"",
+                    ""action"": ""MovingAction2"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -85,7 +85,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MovingAction"",
+                    ""action"": ""MovingAction2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -96,7 +96,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MovingAction"",
+                    ""action"": ""MovingAction2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -107,7 +107,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MovingAction"",
+                    ""action"": ""MovingAction2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -118,7 +118,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MovingAction"",
+                    ""action"": ""MovingAction2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -269,7 +269,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
 }");
         // FirstPersonActionMap
         m_FirstPersonActionMap = asset.FindActionMap("FirstPersonActionMap", throwIfNotFound: true);
-        m_FirstPersonActionMap_MovingAction = m_FirstPersonActionMap.FindAction("MovingAction", throwIfNotFound: true);
+        m_FirstPersonActionMap_MovingAction2 = m_FirstPersonActionMap.FindAction("MovingAction2", throwIfNotFound: true);
         m_FirstPersonActionMap_RotateAction = m_FirstPersonActionMap.FindAction("RotateAction", throwIfNotFound: true);
         m_FirstPersonActionMap_Sprint = m_FirstPersonActionMap.FindAction("Sprint", throwIfNotFound: true);
         // InMenuActionMap
@@ -341,14 +341,14 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     // FirstPersonActionMap
     private readonly InputActionMap m_FirstPersonActionMap;
     private List<IFirstPersonActionMapActions> m_FirstPersonActionMapActionsCallbackInterfaces = new List<IFirstPersonActionMapActions>();
-    private readonly InputAction m_FirstPersonActionMap_MovingAction;
+    private readonly InputAction m_FirstPersonActionMap_MovingAction2;
     private readonly InputAction m_FirstPersonActionMap_RotateAction;
     private readonly InputAction m_FirstPersonActionMap_Sprint;
     public struct FirstPersonActionMapActions
     {
         private @GameInputActions m_Wrapper;
         public FirstPersonActionMapActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MovingAction => m_Wrapper.m_FirstPersonActionMap_MovingAction;
+        public InputAction @MovingAction2 => m_Wrapper.m_FirstPersonActionMap_MovingAction2;
         public InputAction @RotateAction => m_Wrapper.m_FirstPersonActionMap_RotateAction;
         public InputAction @Sprint => m_Wrapper.m_FirstPersonActionMap_Sprint;
         public InputActionMap Get() { return m_Wrapper.m_FirstPersonActionMap; }
@@ -360,9 +360,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_FirstPersonActionMapActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_FirstPersonActionMapActionsCallbackInterfaces.Add(instance);
-            @MovingAction.started += instance.OnMovingAction;
-            @MovingAction.performed += instance.OnMovingAction;
-            @MovingAction.canceled += instance.OnMovingAction;
+            @MovingAction2.started += instance.OnMovingAction2;
+            @MovingAction2.performed += instance.OnMovingAction2;
+            @MovingAction2.canceled += instance.OnMovingAction2;
             @RotateAction.started += instance.OnRotateAction;
             @RotateAction.performed += instance.OnRotateAction;
             @RotateAction.canceled += instance.OnRotateAction;
@@ -373,9 +373,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IFirstPersonActionMapActions instance)
         {
-            @MovingAction.started -= instance.OnMovingAction;
-            @MovingAction.performed -= instance.OnMovingAction;
-            @MovingAction.canceled -= instance.OnMovingAction;
+            @MovingAction2.started -= instance.OnMovingAction2;
+            @MovingAction2.performed -= instance.OnMovingAction2;
+            @MovingAction2.canceled -= instance.OnMovingAction2;
             @RotateAction.started -= instance.OnRotateAction;
             @RotateAction.performed -= instance.OnRotateAction;
             @RotateAction.canceled -= instance.OnRotateAction;
@@ -509,7 +509,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     public TestingActions @testing => new TestingActions(this);
     public interface IFirstPersonActionMapActions
     {
-        void OnMovingAction(InputAction.CallbackContext context);
+        void OnMovingAction2(InputAction.CallbackContext context);
         void OnRotateAction(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
     }

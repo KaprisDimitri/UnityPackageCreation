@@ -35,7 +35,7 @@ public class InputManager : MonoBehaviorDontDestroy
             {
                 Type inputVector2 = typeof(SO_Input_Base<Vector2>);
                 FieldInfo initilizeField = inputVector2.GetField("_initialazed", BindingFlags.NonPublic | BindingFlags.Instance);
-                initilizeField.SetValue(_inputMapData[i].Vector2SOInput[j], false);
+                initilizeField.SetValue(_inputMapData[i].Vector2SOInput[j], false); 
 
             }
 
