@@ -23,7 +23,6 @@ public class InputManager : MonoBehaviorDontDestroy
         Instance = this;
         InitializeInputManager();
         base.Awake();
-
     }
 
     protected override void OnDestroy()
@@ -152,6 +151,8 @@ public class InputManager : MonoBehaviorDontDestroy
                 return;
             }
         }
+
+        Debug.Log("there is not InputData with this actionEnum in the inputManager");
     }
 
     private void EnableActionInActionMap(GameActionsMapsNames.GameActionsEnum actionEnum, InputMapsData inputMapData, bool value)

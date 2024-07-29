@@ -15,6 +15,6 @@ MonoBehaviour:
   _value: {x: 0, y: 0}
   _bridgeValue:
     _activeBridge: 0
-  _actionID: 5
+  _actionID: 1
   _actionName: SalutSalut
   _valueType: 3

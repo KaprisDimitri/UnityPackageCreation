@@ -154,33 +154,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputMapData:
   - ActionMap: 1
-    ListActionVector2Enum: 0100000002000000
+    ListActionVector2Enum: 0200000005000000
     Vector2SOInput:
-    - {fileID: 11400000, guid: 7017393efda4694439056a15f685fde5, type: 2}
-    - {fileID: 11400000, guid: 7813bf3a7b86e01429ee5a3fd9292e24, type: 2}
-    ListActionFloatEnum: 03000000
+    - {fileID: 11400000, guid: 0bd9933ff462e5047bcc64b1321314a2, type: 2}
+    - {fileID: 11400000, guid: 7a3235eac0df5e94dba741e0e077149d, type: 2}
+    ListActionFloatEnum: 00000000
     FloatSOInput:
-    - {fileID: 11400000, guid: 454c500693cf90f45a73e6db7e35c29d, type: 2}
+    - {fileID: 11400000, guid: 2ab6082aea647854a8129abbcd59e12c, type: 2}
     ListActionBoolEnum: 
     BoolSOInput: []
-  - ActionMap: 2
-    ListActionVector2Enum: 06000000
+  - ActionMap: 0
+    ListActionVector2Enum: 01000000
     Vector2SOInput:
-    - {fileID: 11400000, guid: 75f036c614c8c4648acb7eb7fe9063c1, type: 2}
-    ListActionFloatEnum: 05000000
+    - {fileID: 11400000, guid: 5a9890a385751314d8d881b56046b8b6, type: 2}
+    ListActionFloatEnum: 06000000
     FloatSOInput:
-    - {fileID: 11400000, guid: 7bb4b1518a976d94e8732328cd313bcf, type: 2}
-    ListActionBoolEnum: 04000000
+    - {fileID: 11400000, guid: 7cafe4e8faf76954b9935b7373b84415, type: 2}
+    ListActionBoolEnum: 03000000
     BoolSOInput:
-    - {fileID: 11400000, guid: 8b0df9e6ba5cef940a6ebef41d44747d, type: 2}
+    - {fileID: 11400000, guid: 9d4a2b123f7b70447a401f8a2af6fc67, type: 2}
+  - ActionMap: 2
+    ListActionVector2Enum: 
+    Vector2SOInput: []
+    ListActionFloatEnum: 
+    FloatSOInput: []
+    ListActionBoolEnum: 07000000
+    BoolSOInput:
+    - {fileID: 11400000, guid: 4e25b5fece855b740a30c64316356c3b, type: 2}
   - ActionMap: 3
     ListActionVector2Enum: 
     Vector2SOInput: []
     ListActionFloatEnum: 
     FloatSOInput: []
-    ListActionBoolEnum: 08000000
+    ListActionBoolEnum: 04000000
     BoolSOInput:
-    - {fileID: 11400000, guid: 7fa0897c2a7b3ed4a8158d1f71515d4b, type: 2}
+    - {fileID: 11400000, guid: 3e0e39bee7d5c064683d9303a9175ba9, type: 2}
 --- !u!4 &960238559
 Transform:
   m_ObjectHideFlags: 0
@@ -225,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a457c38c87a892419941d17e74b1215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouvement: {fileID: 11400000, guid: 7017393efda4694439056a15f685fde5, type: 2}
+  mouvement: {fileID: 11400000, guid: 0bd9933ff462e5047bcc64b1321314a2, type: 2}
 --- !u!4 &2051064907
 Transform:
   m_ObjectHideFlags: 0

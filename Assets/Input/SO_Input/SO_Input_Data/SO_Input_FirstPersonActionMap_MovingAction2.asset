@@ -15,6 +15,6 @@ MonoBehaviour:
   _value: {x: 0, y: 0}
   _bridgeValue:
     _activeBridge: 0
-  _actionID: 6
+  _actionID: 2
   _actionName: MovingAction2
   _valueType: 3

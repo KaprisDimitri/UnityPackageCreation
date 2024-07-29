@@ -237,7 +237,7 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""testing"",
+            ""name"": ""Testing"",
             ""id"": ""3a8cf4d5-7dc6-47a6-b86f-cd4a7524c3e9"",
             ""actions"": [
                 {
@@ -263,6 +263,34 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Testing2 Avec espace"",
+            ""id"": ""6bb182d3-fd16-4b28-b963-2532d04be144"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""5b9f3c63-c64a-4559-a2c4-a42a703528c7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f6726862-04c3-4902-be9b-7cc388a53473"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -277,9 +305,12 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
         m_InMenuActionMap_fesfesfe = m_InMenuActionMap.FindAction("fesfesfe", throwIfNotFound: true);
         m_InMenuActionMap_ValidAction = m_InMenuActionMap.FindAction("ValidAction", throwIfNotFound: true);
         m_InMenuActionMap_SalutSalut = m_InMenuActionMap.FindAction("SalutSalut", throwIfNotFound: true);
-        // testing
-        m_testing = asset.FindActionMap("testing", throwIfNotFound: true);
-        m_testing_Laction = m_testing.FindAction("Laction", throwIfNotFound: true);
+        // Testing
+        m_Testing = asset.FindActionMap("Testing", throwIfNotFound: true);
+        m_Testing_Laction = m_Testing.FindAction("Laction", throwIfNotFound: true);
+        // Testing2 Avec espace
+        m_Testing2Avecespace = asset.FindActionMap("Testing2 Avec espace", throwIfNotFound: true);
+        m_Testing2Avecespace_Newaction = m_Testing2Avecespace.FindAction("New action", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -462,16 +493,16 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     }
     public InMenuActionMapActions @InMenuActionMap => new InMenuActionMapActions(this);
 
-    // testing
-    private readonly InputActionMap m_testing;
+    // Testing
+    private readonly InputActionMap m_Testing;
     private List<ITestingActions> m_TestingActionsCallbackInterfaces = new List<ITestingActions>();
-    private readonly InputAction m_testing_Laction;
+    private readonly InputAction m_Testing_Laction;
     public struct TestingActions
     {
         private @GameInputActions m_Wrapper;
         public TestingActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Laction => m_Wrapper.m_testing_Laction;
-        public InputActionMap Get() { return m_Wrapper.m_testing; }
+        public InputAction @Laction => m_Wrapper.m_Testing_Laction;
+        public InputActionMap Get() { return m_Wrapper.m_Testing; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
@@ -506,7 +537,53 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
             AddCallbacks(instance);
         }
     }
-    public TestingActions @testing => new TestingActions(this);
+    public TestingActions @Testing => new TestingActions(this);
+
+    // Testing2 Avec espace
+    private readonly InputActionMap m_Testing2Avecespace;
+    private List<ITesting2AvecespaceActions> m_Testing2AvecespaceActionsCallbackInterfaces = new List<ITesting2AvecespaceActions>();
+    private readonly InputAction m_Testing2Avecespace_Newaction;
+    public struct Testing2AvecespaceActions
+    {
+        private @GameInputActions m_Wrapper;
+        public Testing2AvecespaceActions(@GameInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Newaction => m_Wrapper.m_Testing2Avecespace_Newaction;
+        public InputActionMap Get() { return m_Wrapper.m_Testing2Avecespace; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Testing2AvecespaceActions set) { return set.Get(); }
+        public void AddCallbacks(ITesting2AvecespaceActions instance)
+        {
+            if (instance == null || m_Wrapper.m_Testing2AvecespaceActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Testing2AvecespaceActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        private void UnregisterCallbacks(ITesting2AvecespaceActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        public void RemoveCallbacks(ITesting2AvecespaceActions instance)
+        {
+            if (m_Wrapper.m_Testing2AvecespaceActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ITesting2AvecespaceActions instance)
+        {
+            foreach (var item in m_Wrapper.m_Testing2AvecespaceActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Testing2AvecespaceActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public Testing2AvecespaceActions @Testing2Avecespace => new Testing2AvecespaceActions(this);
     public interface IFirstPersonActionMapActions
     {
         void OnMovingAction2(InputAction.CallbackContext context);
@@ -522,5 +599,9 @@ public partial class @GameInputActions: IInputActionCollection2, IDisposable
     public interface ITestingActions
     {
         void OnLaction(InputAction.CallbackContext context);
+    }
+    public interface ITesting2AvecespaceActions
+    {
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }

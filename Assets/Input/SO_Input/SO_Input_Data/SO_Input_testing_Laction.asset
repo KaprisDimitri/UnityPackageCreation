@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6bcdc002c0fe26418a3f549febd4b6e, type: 3}
-  m_Name: SO_Input_testing_Laction
+  m_Name: SO_Input_Testing_Laction
   m_EditorClassIdentifier: 
   _value: 0
   _bridgeValue:
     _activeBridge: 0
-  _actionID: 8
+  _actionID: 7
   _actionName: Laction
   _valueType: 0

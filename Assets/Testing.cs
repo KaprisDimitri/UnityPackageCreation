@@ -10,7 +10,6 @@ public class Testing : MonoBehaviour
     void Start()
     {
         mouvement.SetReceiveBridgeValue(MouvementAction, true);
-        mouvement.SetReceiveBridgeValue(MouvementAction, false);
         InputManager.Instance.EnableAction(GameActionsEnum.FirstPersonActionMap_MovingAction2, true);
 
         mouvement.OnActived.SetRecieveValue(Active, true);

@@ -15,6 +15,6 @@ MonoBehaviour:
   _value: 0
   _bridgeValue:
     _activeBridge: 0
-  _actionID: 4
+  _actionID: 6
   _actionName: ValidAction
   _valueType: 1

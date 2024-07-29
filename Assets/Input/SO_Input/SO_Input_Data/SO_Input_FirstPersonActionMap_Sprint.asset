@@ -15,6 +15,6 @@ MonoBehaviour:
   _value: 0
   _bridgeValue:
     _activeBridge: 0
-  _actionID: 3
+  _actionID: 0
   _actionName: Sprint
   _valueType: 1

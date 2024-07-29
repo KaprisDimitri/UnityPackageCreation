@@ -215,7 +215,7 @@
             ]
         },
         {
-            "name": "testing",
+            "name": "Testing",
             "id": "3a8cf4d5-7dc6-47a6-b86f-cd4a7524c3e9",
             "actions": [
                 {
@@ -237,6 +237,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Laction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Testing2 Avec espace",
+            "id": "6bb182d3-fd16-4b28-b963-2532d04be144",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "5b9f3c63-c64a-4559-a2c4-a42a703528c7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f6726862-04c3-4902-be9b-7cc388a53473",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

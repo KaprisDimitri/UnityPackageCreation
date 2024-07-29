@@ -6,8 +6,7 @@ using UnityEditor;
 using System.IO;
 using static GameActionsMapsNames;
 using System.Linq;
-using UnityEditor.VersionControl;
-using UnityEngine.InputSystem;
+using System.Text.RegularExpressions;
 
 [CustomEditor(typeof(InputManager))]
 public class InputManagerEditor : Editor
@@ -85,7 +84,7 @@ public class InputManagerEditor : Editor
             gameEnumString.Remove(actionID);
             return true;
         }
-
+        Debug.Log(actionID + " n est pas contenue dans les enum");
         return false;
     }
 
@@ -161,6 +160,7 @@ public class InputManagerEditor : Editor
 
         if (!GetFileLines(filePath, out List<string> filelines))
         {
+            //Generer le fichier si il n existe pas
             return;
         }
 
@@ -224,7 +224,7 @@ public class InputManagerEditor : Editor
         {
             for (int t = 0; t < inputActions.asset.actionMaps[i].actions.Count; t++) 
             {
-                string actionID = inputActions.asset.actionMaps[i].name + "_" + inputActions.asset.actionMaps[i].actions[t].name;
+                string actionID = FormatActionID(inputActions.asset.actionMaps[i].name + "_" + inputActions.asset.actionMaps[i].actions[t].name);
 
                 if (!CheckIfEnumExist(ref gameActionEnumString, actionID))
                 {
@@ -235,9 +235,11 @@ public class InputManagerEditor : Editor
                 }
             }
 
-            if (!CheckIfEnumExist(ref gameActionMapEnumString, inputActions.asset.actionMaps[i].name))
+            string actionMapID = FormatActionID(inputActions.asset.actionMaps[i].name);
+
+            if (!CheckIfEnumExist(ref gameActionMapEnumString, actionMapID))
             {
-                filelines.Insert(indexToInsetActionMap, ALINEA + ALINEA + inputActions.asset.actionMaps[i].name + ",");
+                filelines.Insert(indexToInsetActionMap, ALINEA + ALINEA + actionMapID + ",");
                 isLineChanges = true;
             }
         }
@@ -250,6 +252,49 @@ public class InputManagerEditor : Editor
         }
 
         return isLineChanges;
+    }
+
+    public static string FormatActionID(string actionID)
+    {
+        // Étape 1 : Enlever les caractères spéciaux non autorisés
+        // Conserver uniquement les lettres, chiffres, les espaces et les underscores (_)
+        string cleanedID = Regex.Replace(actionID, @"[^a-zA-Z0-9_ ]", "");
+        // Étape 2 : Capitaliser la première lettre et les lettres après les espaces ou underscores
+        string formattedID = "";
+        bool capitalizeNext = true;
+
+        foreach (char c in cleanedID)
+        {
+            if (c == ' ')
+            {
+                capitalizeNext = true;
+                continue;
+            }
+
+            if (c == '_')
+            {
+                formattedID += c;
+                capitalizeNext = true;
+                continue;
+            }
+
+            if (capitalizeNext)
+            {
+                formattedID += char.ToUpper(c); // Capitaliser la lettre
+                capitalizeNext = false;
+                continue;
+            }
+
+            formattedID += c;
+        }
+
+        // Étape 3 : Capitaliser la première lettre de la chaîne entière
+        if (formattedID.Length > 0)
+        {
+            formattedID = char.ToUpper(formattedID[0]) + formattedID.Substring(1);
+        }
+
+        return formattedID;
     }
 
     //Gerer les enum qui n existe plus et les retirer
@@ -352,23 +397,26 @@ public class InputManagerEditor : Editor
         GameInputActions inputActions = new GameInputActions();
 
         string directoryPath = SO_InputManagerSettings.GetPathSOInputs;
+
         if (String.IsNullOrEmpty(directoryPath))
         {
             SO_InputManagerSettings.GetOrCreateSettings();
             directoryPath = SO_InputManagerSettings.GetPathSOInputs;
         }
 
-
         for (int i = 0; i < inputActions.asset.actionMaps.Count; i++)
         {
             inputMapData.Add(new InputManager.InputMapsData());
-            if(GetEnumActionMapByString(inputActions.asset.actionMaps[i].name, out GameActionsMapsEnum actionMapEnum))
+
+            string actionMapName = FormatActionID(inputActions.asset.actionMaps[i].name);
+
+            if (GetEnumActionMapByString(actionMapName, out GameActionsMapsEnum actionMapEnum))
             {
                 Debug.Log("j ai trouver enum: " + actionMapEnum.ToString());
             }
             else
             {
-                Debug.Log("j ai pas trouver enum: " + actionMapEnum.ToString() +" Target: " + inputActions.asset.actionMaps[i].name);
+                Debug.Log("j ai pas trouver enum: " + actionMapEnum.ToString() +" Target: " + actionMapName);
             }
 
             inputMapData[i].ActionMap = actionMapEnum;
@@ -376,7 +424,7 @@ public class InputManagerEditor : Editor
             for (int t = 0; t < inputActions.asset.actionMaps[i].actions.Count; t++)
             {
                 string actionName = inputActions.asset.actionMaps[i].actions[t].name;
-                string actionID = inputActions.asset.actionMaps[i].name + "_" + actionName;
+                string actionID = actionMapName + "_" + FormatActionID(actionName);
                 string assetPath = directoryPath + GetSONameWithActionIDWithExtension(actionID);
 
                 switch (inputActions.asset.actionMaps[i].actions[t].expectedControlType)
@@ -427,7 +475,7 @@ public class InputManagerEditor : Editor
         SaveAssetAndSetInputMapData(inputMapData);
     }
 
-    private bool  CheckAndSetAssetExistAndSameValue<TScriptableObject, T> (ref List<GameActionsEnum> listGameActionEnum, ref List<SO_Input_Base<T>> listSo, string assetPath, string actionID, ValueType valueType) where TScriptableObject : SO_Input_Base<T>
+    private bool CheckAndSetAssetExistAndSameValue<TScriptableObject, T> (ref List<GameActionsEnum> listGameActionEnum, ref List<SO_Input_Base<T>> listSo, string assetPath, string actionID, ValueType valueType) where TScriptableObject : SO_Input_Base<T>
     {
         if (File.Exists(Application.dataPath.Replace("Assets", "") + assetPath))
         {
@@ -498,6 +546,7 @@ public class InputManagerEditor : Editor
 
         EditorUtility.SetDirty(inputManager);
     }
+    
     private string GetSONameWithActionIDWithExtension(string actionID)
     {
         return GetSONameWithActionID(actionID) + ".asset";

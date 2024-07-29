@@ -30,8 +30,6 @@ public abstract class SO_Input_Base<T> : SO_Value_Base<T>
         _onActived = new SecuredAction<bool,float, string>(out sendStarted, () => { return BridgeValue.ActiveBridge; });
         return true;
     }
-
-
 }
 
 public enum ValueType
