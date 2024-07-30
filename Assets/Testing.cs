@@ -10,9 +10,10 @@ public class Testing : MonoBehaviour
     void Start()
     {
         mouvement.SetReceiveBridgeValue(MouvementAction, true);
-        InputManager.Instance.EnableAction(GameActionsEnum.FirstPersonActionMap_MovingAction2, true);
+       InputManager.Instance.EnableAction(GameActionsEnum.ExempleActionMap_Moving, true);
 
         mouvement.OnActived.SetRecieveValue(Active, true);
+        mouvement.OnPerformed.SetRecieveValue(MouvementAction2, true);
         StartCoroutine(Coroutine01()); 
     }
 
@@ -26,6 +27,10 @@ public class Testing : MonoBehaviour
     {
         Debug.Log("je bouge value: " + value);
     }
+    public void MouvementAction2(Vector2 value, string device)
+    {
+        Debug.Log("je bouge value: " + value + " Avec le device: " + device);
+    }
 
     public void Active (bool pressed, float time, string deviceName)
     {
@@ -36,11 +41,13 @@ public class Testing : MonoBehaviour
     IEnumerator Coroutine01 ()
     {
         yield return new WaitForSeconds(30);
-       /* Debug.Log("j ai attendu 1 je desactive");
-        InputManager.Instance.EnableAction(GameActionsMapsNames.GameActionsEnum.FirstPersonActionMap_MovingAction, false);
+        Debug.Log("je set la valeur a a false man tu devrais rien recevoir");
+      //  InputManager.Instance.EnableAction(GameActionsEnum.FirstPersonActionMap_MovingAction, false);
+        /* Debug.Log("j ai attendu 1 je desactive");
+         InputManager.Instance.EnableAction(GameActionsMapsNames.GameActionsEnum.FirstPersonActionMap_MovingAction, false);
 
-        yield return new WaitForSeconds(30);
-        Debug.Log("j ai attendu 1 je active");
-        InputManager.Instance.EnableAction(GameActionsMapsNames.GameActionsEnum.FirstPersonActionMap_MovingAction, true);*/
+         yield return new WaitForSeconds(30);
+         Debug.Log("j ai attendu 1 je active");
+         InputManager.Instance.EnableAction(GameActionsMapsNames.GameActionsEnum.FirstPersonActionMap_MovingAction, true);*/
     }
 }

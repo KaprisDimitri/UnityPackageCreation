@@ -18,10 +18,10 @@ public abstract class SO_Value_Base<T> : ScriptableObject
     /// <summary>
     /// Need to be call to Initialize the SO_Value
     /// </summary>
-    public virtual void Initialization()
+    public virtual void Initialization(bool activeBridge = true)
     {
         if(_initialazed) { Debug.LogWarning(this.name + " is already initialize"); return; }
-        _bridgeValue = new BridgeValue<T>(out _sendBridgeValue);
+        _bridgeValue = new BridgeValue<T>(out _sendBridgeValue, activeBridge);
         _value = default;
         _initialazed = true;
     }

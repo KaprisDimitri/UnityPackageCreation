@@ -159,7 +159,7 @@ public class SecuredAction<T, T2, T3>
 
     private void OnValueChange(T value, T2 value2, T3 value3)
     {
-        if (!_conditionToSend()) { return; }
+        if (!(bool)(_conditionToSend?.Invoke())) { return; }
         _recieve?.Invoke(value, value2, value3);
     }
 }

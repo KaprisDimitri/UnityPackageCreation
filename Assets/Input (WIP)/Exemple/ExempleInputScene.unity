@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &960238557
+--- !u!1 &9502666
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,8 +131,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 960238559}
-  - component: {fileID: 960238558}
+  - component: {fileID: 9502668}
+  - component: {fileID: 9502667}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -140,13 +140,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &960238558
+--- !u!114 &9502667
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960238557}
+  m_GameObject: {fileID: 9502666}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1ab463578ebbf24aa7c1776995f4730, type: 3}
@@ -154,48 +154,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputMapData:
   - ActionMap: 1
-    ListActionVector2Enum: 0200000005000000
+    ListActionVector2Enum: 00000000
     Vector2SOInput:
-    - {fileID: 11400000, guid: 0bd9933ff462e5047bcc64b1321314a2, type: 2}
-    - {fileID: 11400000, guid: 7a3235eac0df5e94dba741e0e077149d, type: 2}
-    ListActionFloatEnum: 00000000
-    FloatSOInput:
-    - {fileID: 11400000, guid: 2ab6082aea647854a8129abbcd59e12c, type: 2}
+    - {fileID: 11400000, guid: 605c67ef4b554a54bb1238db109c3c5f, type: 2}
+    ListActionFloatEnum: 
+    FloatSOInput: []
     ListActionBoolEnum: 
     BoolSOInput: []
   - ActionMap: 0
     ListActionVector2Enum: 01000000
     Vector2SOInput:
-    - {fileID: 11400000, guid: 5a9890a385751314d8d881b56046b8b6, type: 2}
-    ListActionFloatEnum: 06000000
-    FloatSOInput:
-    - {fileID: 11400000, guid: 7cafe4e8faf76954b9935b7373b84415, type: 2}
-    ListActionBoolEnum: 03000000
-    BoolSOInput:
-    - {fileID: 11400000, guid: 9d4a2b123f7b70447a401f8a2af6fc67, type: 2}
-  - ActionMap: 2
-    ListActionVector2Enum: 
-    Vector2SOInput: []
+    - {fileID: 11400000, guid: 5428ae0c631df934c84cb0626e2607de, type: 2}
     ListActionFloatEnum: 
     FloatSOInput: []
-    ListActionBoolEnum: 07000000
-    BoolSOInput:
-    - {fileID: 11400000, guid: 4e25b5fece855b740a30c64316356c3b, type: 2}
-  - ActionMap: 3
-    ListActionVector2Enum: 
-    Vector2SOInput: []
-    ListActionFloatEnum: 
-    FloatSOInput: []
-    ListActionBoolEnum: 04000000
-    BoolSOInput:
-    - {fileID: 11400000, guid: 3e0e39bee7d5c064683d9303a9175ba9, type: 2}
---- !u!4 &960238559
+    ListActionBoolEnum: 
+    BoolSOInput: []
+--- !u!4 &9502668
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 960238557}
+  m_GameObject: {fileID: 9502666}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.0068174824, y: 4.345674, z: -3.048789}
@@ -204,7 +184,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2051064905
+--- !u!1 &2035565088
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -212,7 +192,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2051064907}
+  - component: {fileID: 2035565090}
+  - component: {fileID: 2035565089}
   m_Layer: 0
   m_Name: ExempleInputSetUp
   m_TagString: Untagged
@@ -220,13 +201,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2051064907
+--- !u!114 &2035565089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2035565088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c6b2112c101cc341b92961d5162ecfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouvement: {fileID: 11400000, guid: 5428ae0c631df934c84cb0626e2607de, type: 2}
+--- !u!4 &2035565090
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2051064905}
+  m_GameObject: {fileID: 2035565088}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.0068174824, y: 4.345674, z: -3.048789}
@@ -239,5 +233,5 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 960238559}
-  - {fileID: 2051064907}
+  - {fileID: 9502668}
+  - {fileID: 2035565090}

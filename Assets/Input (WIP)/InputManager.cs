@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static InputManager;
 
 public class InputManager : MonoBehaviorDontDestroy
 {
@@ -92,17 +93,18 @@ public class InputManager : MonoBehaviorDontDestroy
             return;
         }
 
-        inputSO.InitializationSOValueInput(out Action<bool, float, string> newAction);
+        inputSO.InitializationSOValueInput(out Action<bool, float, string> newAction, out Action<T, string> performedAction);
         onActivetedList.Add(newAction);
 
         _inputActions.FindAction(inputSO.ActionName).started += (ctx) => { newAction?.Invoke(true, 0, ctx.control.device.name); };
-            //inputList[index].Value = readValue(ctx); fonctionne car readValue est une Func elle a donc un retour contrairement au Action
+
         _inputActions.FindAction(inputSO.ActionName).performed += (ctx) => { inputSO.Value = readValue(ctx); };
+        _inputActions.FindAction(inputSO.ActionName).performed += (ctx) => { performedAction?.Invoke(readValue(ctx), ctx.control.device.name); };
+
         _inputActions.FindAction(inputSO.ActionName).canceled += (ctx) => {
              inputSO.Value = readValue(ctx);
              newAction?.Invoke(false, (float)ctx.duration, ctx.control.device.name); 
         };
-       
     }
     #endregion
 
@@ -155,6 +157,7 @@ public class InputManager : MonoBehaviorDontDestroy
         Debug.Log("there is not InputData with this actionEnum in the inputManager");
     }
 
+    //TODO Faire en sorte d ameliorer la recherche
     private void EnableActionInActionMap(GameActionsMapsNames.GameActionsEnum actionEnum, InputMapsData inputMapData, bool value)
     {
 
@@ -185,6 +188,69 @@ public class InputManager : MonoBehaviorDontDestroy
         Debug.LogWarning($"Action {actionEnum} not found in ActionMap {inputMapData.ActionMap}.");
     }
     #endregion
+
+    public bool GetSOInput<T> (GameActionsMapsNames.GameActionsEnum actionEnum, out SO_Input_Base<T> soInput)
+    {
+        GameActionsMapsNames.GetEnumActionMapByString(actionEnum.ToString().Split("_")[0], out GameActionsMapsNames.GameActionsMapsEnum actionMapEnum);
+        soInput = null;
+
+        for (int t = 0; t < _inputMapData.Count; t++)
+        {
+            if (_inputMapData[t].ActionMap == actionMapEnum)
+            {
+                for (int i = 0; i < _inputMapData[t].Vector2SOInput.Count; i++)
+                {
+                    if (_inputMapData[t].ListActionVector2Enum[i] == actionEnum)
+                    {
+                        if (!CheckIfSameType(typeof(Vector2), typeof(T)))
+                        {
+                            return false;
+                        }
+                        soInput =  _inputMapData[t].Vector2SOInput[i] as SO_Input_Base<T>;
+                        return true;
+                    }
+                }
+                for (int i = 0; i < _inputMapData[i].BoolSOInput.Count; i++)
+                {
+                    if (_inputMapData[i].ListActionBoolEnum[i] == actionEnum)
+                    {
+                        if (!CheckIfSameType(typeof(bool), typeof(T)))
+                        {
+                            return false;
+                        }
+                        soInput = _inputMapData[t].BoolSOInput[i] as SO_Input_Base<T>;
+                        return true;
+                    }
+                }
+                for (int i = 0; i < _inputMapData[i].FloatSOInput.Count; i++)
+                {
+                    if (_inputMapData[i].ListActionFloatEnum[i] == actionEnum)
+                    {
+                        if (!CheckIfSameType(typeof(float), typeof(T)))
+                        {
+                            return false;
+                        }
+                        soInput = _inputMapData[t].FloatSOInput[i] as SO_Input_Base<T>;
+                        return true;
+                    }
+                }
+
+            }
+        }
+        Debug.LogWarning("Not SO_Input was find multiple resond can be the origine actionMapEnum not match with a InputMapsData or not actionEnum match with GameActionsMapsNames.GameActionsEnum int the InputMapsData search value: " + actionEnum);
+        return false;
+    }
+
+    //This onction is here just for the Debug.Log
+    private bool CheckIfSameType (Type tocheck, Type reference)
+    {
+        if (tocheck != reference)
+        {
+            Debug.LogWarning("You try to get a SOInput with the wrong type, actual type: " + tocheck + " type you try to get: " + reference);
+            return false;
+        }
+        return true;
+    }
 
     [Serializable]
     public class InputMapsData

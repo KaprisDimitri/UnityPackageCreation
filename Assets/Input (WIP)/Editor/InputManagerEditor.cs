@@ -132,8 +132,7 @@ public class InputManagerEditor : Editor
         directoryPathIO = Application.dataPath + directoryPathIO.Replace("Assets", "");
 
         string[] files = Directory.GetFiles(directoryPathIO, "*.asset", SearchOption.AllDirectories);
-        Debug.Log(files.Length);
-        Debug.Log(gameActionEnumStringLeft.Count);
+
         for(int i = 0; i < files.Length; i++)
         {
             for(int y = 0; y < gameActionEnumStringLeft.Count; y++)
@@ -145,10 +144,6 @@ public class InputManagerEditor : Editor
                         " If you want to delet this asset you can remove it in: " + directoryPath + GetSONameWithActionIDWithExtension(gameActionEnumStringLeft[y]));
                     
                     AssetDatabase.RenameAsset(directoryPath + GetSONameWithActionIDWithExtension(gameActionEnumStringLeft[y]), GetSONameWithActionIDNoReference(gameActionEnumStringLeft[y]));
-                }
-                else
-                {
-                    Debug.Log(Path.GetFileNameWithoutExtension(files[i]) + " n est pas egal " + GetSONameWithActionID(gameActionEnumStringLeft[y]));
                 }
             }
         }
@@ -410,13 +405,9 @@ public class InputManagerEditor : Editor
 
             string actionMapName = FormatActionID(inputActions.asset.actionMaps[i].name);
 
-            if (GetEnumActionMapByString(actionMapName, out GameActionsMapsEnum actionMapEnum))
+            if (!GetEnumActionMapByString(actionMapName, out GameActionsMapsEnum actionMapEnum))
             {
-                Debug.Log("j ai trouver enum: " + actionMapEnum.ToString());
-            }
-            else
-            {
-                Debug.Log("j ai pas trouver enum: " + actionMapEnum.ToString() +" Target: " + actionMapName);
+                Debug.Log("didn t find the action map enum: " + actionMapEnum.ToString() +" Target: " + actionMapName);
             }
 
             inputMapData[i].ActionMap = actionMapEnum;
